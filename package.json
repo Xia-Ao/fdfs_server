@@ -1,0 +1,12 @@
+{
+  "name": "fdfs-server",
+  "version": "1.0.0",
+  "description": "fdfs image server",
+  "main": "app.js",
+  "repository": "git@github.com:Xia-Ao/fdfs_server.git",
+  "author": "ao.xia",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.11.0"
+  }
+}
