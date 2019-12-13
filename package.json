@@ -6,7 +6,19 @@
   "repository": "git@github.com:Xia-Ao/fdfs_server.git",
   "author": "ao.xia",
   "license": "MIT",
+  "scripts": {
+    "start": "node bin/www.js"
+  },
   "dependencies": {
     "koa": "^2.11.0"
+  },
+  "devDependencies": {
+    "fdfs": "^1.0.4",
+    "koa-body": "^4.1.1",
+    "koa-bodyparser": "^4.2.1",
+    "koa-json": "^2.0.2",
+    "koa-logger": "^3.2.1",
+    "koa-onerror": "^4.1.0",
+    "koa-router": "^7.4.0"
   }
 }
