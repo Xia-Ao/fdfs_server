@@ -3,7 +3,7 @@
 * @Author: ao.xia
 * @Date: 2019-12-12 20:14:01
  * @Last Modified by: ao.xia
- * @Last Modified time: 2019-12-12 20:17:55
+ * @Last Modified time: 2019-12-17 20:18:30
 */
 
 const uploadService = async (file) => {
@@ -14,4 +14,4 @@ const uploadService = async (file) => {
 }
 
 
-export default uploadService;
+module.exports = uploadService;

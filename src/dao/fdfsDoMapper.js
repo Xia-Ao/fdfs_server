@@ -1,16 +1,16 @@
 
-const dbUtils = require('../common/utils/db-util');
+const dbUtils = require('./DB/db-util');
 const SQL = require('./SQL/fdfsSQL.js');
 
 
 // fastdfs表sql操作
-export default fastdfsDoMapper = {
+const fastdfsDoMapper = {
 
 
     /**
      * 插入数据
      */
-    insert(data) {
+    async insert(data) {
         let _sql = SQL.insert(data);
         let result = await dbUtils.query(_sql)
         if (Array.isArray(result) && result.length > 0) {
@@ -21,22 +21,24 @@ export default fastdfsDoMapper = {
         return result;
     },
 
-    deleteById(id) {
+    async deleteById(id) {
 
     },
 
 
-    updateById(data) {
+    async updateById(data) {
 
     },
 
-    selectById(id) {
+    async selectById(id) {
 
     },
 
-    selectListByPage(page, pageSize) {
+    async selectListByPage(page, pageSize) {
 
     }
 
     
 }
+
+module.exports = fastdfsDoMapper;

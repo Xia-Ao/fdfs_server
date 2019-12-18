@@ -2,30 +2,31 @@
  * @Author: ao.xia 
  * @Date: 2019-12-14 01:26:59 
  * @Last Modified by: ao.xia
- * @Last Modified time: 2019-12-14 01:27:39
+ * @Last Modified time: 2019-12-17 21:30:20
  */
 
-
-/**
- * 定义数据的get方法， 只允许数据的单向传递
- * @param {String} key 
- * @param {function | other} val 
- */
-const definedData = (key, val) => {
-    Object.defineProperty(this, key, {
-        get() {
-            if (typeof val !== 'function') {
-                return val;
-            } else {
-                return val();
-            }
-        }
-    })
-};
+const definedData = require('../definedData');
 
 
-class FdfsModel {
+class FdfsDo {
     constructor(doData){
-        definedData('name', doData.name);
+        definedData('file_name', doData.fileName);
+        definedData('file_type', doData.fileType);
+        definedData('path', doData.filePath);
+        definedData('size', () => {
+            if (typeof doData.size != 'number') {
+                return 0;
+            }
+            return doData.size;
+        });
+        definedData('create_time', () => {
+            let timeStr = doData.createTime;
+            if (!timeStr) {
+                return 0;
+            }
+            return new Date(timeStr).getTime();
+        });
     }
 }
+
+module.exports = FdfsDo;

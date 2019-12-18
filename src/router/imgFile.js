@@ -3,7 +3,7 @@ const {
     getFileListController,
     fileUpLoadController,
     fileDelController,
-} = require('../controller/fileUploadController.js/index.js.js');
+} = require('../controller/fileUploadController.js');
 
 router.prefix('/upload');
 

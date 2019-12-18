@@ -10,9 +10,11 @@
     "start": "node bin/www.js"
   },
   "dependencies": {
-    "koa": "^2.11.0"
+    "koa": "^2.11.0",
+    "mysql": "^2.17.1"
   },
   "devDependencies": {
+    "eslint": "^6.7.2",
     "fdfs": "^1.0.4",
     "koa-body": "^4.1.1",
     "koa-bodyparser": "^4.2.1",

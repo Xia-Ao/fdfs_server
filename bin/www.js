@@ -2,8 +2,10 @@
 const http = require('http');
 const App = require('../app');
 const debug = require('debug')('demo:server');
+const config = require('../config');
+const process = require('process');
 
-let port = 3003
+let port = config.port || 3002;
 
 let server = http.createServer(App.callback());
 

@@ -6,8 +6,10 @@ const koaBody = require('koa-body');
 const bodyparser = require('koa-bodyparser');
 const logger = require('koa-logger');
 
-const uploadRouter = require('./src/router/upload');
+
+const uploadRouter = require('./src/router/imgFile');
 const index = require('./src/router/index');
+
 
 const app = new Koa();
 
