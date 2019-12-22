@@ -13,6 +13,8 @@ const fdfs = new FdfsClient({
     ],
     // 默认超时时间10s
     timeout: 10000,
+    // 当获取不到文件后缀时使用
+    defaultExt: 'txt',
     // 日志
     logger: {
         log: debug

@@ -1,14 +1,29 @@
-const fs = require('fs');
-const path = require('path');
-const fdfs = require('../common/fdfs');
 
-const uploadService  = require('../services/uploadService');
+const uploadService = require('../services/uploadService');
+const getFileService = require('../services/getFileService');
+const fileDelService = require('../services/fileDelService');
+const responseModel = require('../model/resultData/responseModel');
 
 /**
  * 获取文件列表
  */
-const getFileListController = async (ctx, next) => {
-    
+const getFileListController = async (ctx) => {
+    let params = ctx.request.query;
+    let result = {...responseModel};
+    result = await getFileService.getFileListService(params);
+    ctx.body = result;
+}
+
+/**
+ * 获取图片详情
+ * @param {*} ctx 
+ * @param {*} next 
+ */
+const getFileController = async (ctx) => {
+    let {id} = ctx.request.query;
+    let result = {...responseModel};
+    result = await getFileService.getFileById(id);
+    ctx.body = result;
 }
 
 
@@ -17,35 +32,34 @@ const getFileListController = async (ctx, next) => {
  * @param {*} ctx 
  * @param {*} next 
  */
-const fileUpLoadController = async (ctx, next) => {
+const fileUpLoadController = async (ctx) => {
 
     let files = ctx.request.files;
-
-
-    // let readStream = fs.createReadStream(files.img.path);
-    // let filePath = path.join(__dirname, '../../') + `/${files.img.name}`;
-
-    // const upStream = fs.createWriteStream(filePath);
-    // readStream.pipe(upStream);
-
-    // let imgPath = path.resolve('hu.png');
-    let result = await uploadService(files.file);
-
-    ctx.body = result
+    let result = {...responseModel};
+    if (!files) {
+        ctx.body = result;
+        return 
+    }
+    result = await uploadService(files.file);
+    ctx.body = result;
 }
 
 
 /**
  * 删除图片
  */
-const fileDelController = async (ctx, next) => {
-    
+const fileDelController = async (ctx) => {
+    let {id} = ctx.request.query;
+    let result = {...responseModel};
+    result = await fileDelService(id);
+    ctx.body = result;
 }
 
 
 
 module.exports = {
     fileUpLoadController,
+    getFileController,
     getFileListController,
     fileDelController
 };

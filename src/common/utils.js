@@ -2,7 +2,7 @@
  * @Author: ao.xia 
  * @Date: 2019-12-14 01:42:36 
  * @Last Modified by: ao.xia
- * @Last Modified time: 2019-12-17 21:31:25
+ * @Last Modified time: 2019-12-18 21:28:21
  */
 const isEmpty = data => data === '' || data === null || typeof data === 'undefined';
 
@@ -103,9 +103,16 @@ const dateDiffFormat = (dateDiffNum = 0, formatStr = 'd 天 hh 小时 mm 分钟 
     });
 }; 
 
+const getFileExtension = (fileName = '') => {
+    if (!fileName || typeof fileName !== 'string') {
+        return '';
+    }
+    return fileName.split('.').pop().toLowerCase();
+}
 
 module.exports = {
     isEmpty,
     dateFormat,
     dateDiffFormat,
+    getFileExtension
 }

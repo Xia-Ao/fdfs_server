@@ -2,32 +2,47 @@
  * @Author: ao.xia 
  * @Date: 2019-12-14 01:24:22 
  * @Last Modified by: ao.xia
- * @Last Modified time: 2019-12-17 21:27:47
+ * @Last Modified time: 2019-12-22 18:53:46
  */
 
-const definedData = require('../definedData');
 const {dateFormat} = require('../../common/utils.js');
 
-class FdfsModel {
-    constructor(model){
-        definedData('fileName', model.file_name);
-        definedData('fileType', model.file_type);
-        definedData('filePath', model.path);
-        definedData('size', () => {
-            if (typeof model.size != 'number') {
-                return 0;
-            }
-            return model.size;
-        });
-        definedData('createTime', () => {
-            let time = model.create_time;
-            if (!timeStr) {
-                return dateFormat(0);
-            }
-            return dateFormat(time);
-        });
+const fdfsDoToModel = (data) => {
+    
+    let _getFileName = name => name;
+
+    let _getFileType = type => type;
+
+    let _getPath = path => path;
+
+    let _grtUrl = path => `http://img.xiaao.xin/${path}`;
+
+    let _getExtension = extension => extension;
+
+    let _getSize = (size) => {
+        if (typeof size != 'number') {
+            return 0;
+        }
+        return size;
+    }
+
+    let _getCreateTime = (time) => {
+        if (!time) {
+            return dateFormat(0);
+        }
+        return dateFormat(time);
+    }
+
+    return {
+        fileName: _getFileName(data.file_name),
+        fileType: _getFileType(data.file_type),
+        extension: _getExtension(data.extension),
+        filePath: _getPath(data.path),
+        size: _getSize(data.size),
+        url: _grtUrl(data.path),
+        createTime: _getCreateTime(data.create_time)
     }
 }
 
 
-module.exports = FdfsModel;
+module.exports = fdfsDoToModel;
