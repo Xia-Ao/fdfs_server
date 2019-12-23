@@ -3,18 +3,27 @@ const {
     getFileListController,
     getFileController,
     fileUpLoadController,
+    fileBatchUploadController,
     fileDelController,
+    fileBatchDelController,
 
 } = require('../controller/fileUploadController.js');
 
-router.prefix('/upload');
+router.prefix('/image');
 
-router.get('/img_list', getFileListController);
+// 获取图片列表
+router.get('/list', getFileListController);
 
-router.get('/get_img', getFileController);
+// 获取单个图片
+router.get('/get', getFileController);
 
-router.post('/img_uoload_v1', fileUpLoadController);
+// 单张图片上传
+router.post('/uoload_v1', fileUpLoadController);
 
-router.del('/img_del', fileDelController);
+// 删除单个图片
+router.del('/del', fileDelController);
+
+// 批量删除图片
+router.del('/batch_del', fileBatchDelController);
 
 module.exports = router;

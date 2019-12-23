@@ -3,14 +3,13 @@
 * @Author: ao.xia
 * @Date: 2019-12-12 20:14:01
  * @Last Modified by: ao.xia
- * @Last Modified time: 2019-12-22 21:01:31
+ * @Last Modified time: 2019-12-23 21:11:13
 */
 const fs = require('fs');
 const fdfs = require('../common/fdfs');
 const serviceResultModel = require('../model/resultData/serviceResultModel');
 const fileDao = require('../dao/fdfsDoMapper');
 const fdfsModelToDo = require('../model/fdfs/fdfsModelToDo');
-const fdfsDoToModel = require('../model/fdfs/fdfsDoToModel');
 const {getFileExtension, dateFormat} = require('../common/utils.js');
 const getFileService = require('./getFileService')
 
@@ -50,7 +49,6 @@ const uploadService = async (file) => {
         let fileId = await fdfs.upload(fileBuffer, {
             ext: modelData.extension,
         });
-        console.log(fileId);
         // 校验fileId
         if (!fileId) {
             result.status = false;
@@ -91,4 +89,11 @@ const uploadService = async (file) => {
 }
 
 
-module.exports = uploadService;
+const batchUploadService = (ctx) => {
+    
+} 
+
+module.exports = {
+    uploadService,
+    batchUploadService,
+}
