@@ -2,13 +2,15 @@
  * @Author: ao.xia 
  * @Date: 2019-12-14 01:24:22 
  * @Last Modified by: ao.xia
- * @Last Modified time: 2019-12-22 18:53:46
+ * @Last Modified time: 2019-12-26 22:04:21
  */
 
 const {dateFormat} = require('../../common/utils.js');
 
 const fdfsDoToModel = (data) => {
-    
+
+    let _getId = id => id ? id : null;
+
     let _getFileName = name => name;
 
     let _getFileType = type => type;
@@ -34,6 +36,7 @@ const fdfsDoToModel = (data) => {
     }
 
     return {
+        id: _getId(data.id),
         fileName: _getFileName(data.file_name),
         fileType: _getFileType(data.file_type),
         extension: _getExtension(data.extension),

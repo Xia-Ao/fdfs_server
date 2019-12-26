@@ -3,13 +3,13 @@
 * @Author: ao.xia
 * @Date: 2019-12-12 20:14:01
  * @Last Modified by: ao.xia
- * @Last Modified time: 2019-12-24 01:00:06
+ * @Last Modified time: 2019-12-26 22:47:31
 */
 const serviceResult = require('../model/resultData/serviceResultModel');
 const fileDao = require('../dao/fdfsDoMapper');
 const getFileService = require('./getFileService');
 const fdfs = require('../common/fdfs');
-const MESSAGE = require('../model/resultData/messageModel')
+const fdfsDoToModel = require('../model/fdfs/fdfsDoToModel');
 
 const deleteService = async (id) => {
 
@@ -62,7 +62,7 @@ const batchDeleteService = async (ids) => {
     let result = {...serviceResult};
 
     // 1. 入参校验
-    if (!(Array.isArray(ids) && ids.length <= 0)) {
+    if (!(Array.isArray(ids) && ids.length > 0)) {
         result.message = '删除列表ids为空';
         return result
     }
@@ -81,30 +81,30 @@ const batchDeleteService = async (ids) => {
 
 
     // 3. 获取文件fileId
-    ids.map(async (id) => {
-        // id 校验
-        if (id) {
-            let fileResult = await getFileService.getFileById(id);
-            if (fileResult.status && fileResult.data && fileResult.data.filePath) {
-                fileList.push(fileResult.data);
-            } else {
-                failList.push(id);
-            }
-        } else {
-            failList.push(id);
-        }
-    })
-
-    // 4. 并行异步在fdfs中删除文件
+    let fileResult = await fileDao.selectByIds(ids);
+    if (Array.isArray(fileResult) && fileResult.length > 0) {
+        fileList = fileResult.map(item => fdfsDoToModel(item));
+    } else {
+       fileList = [];
+    }
     if (fileList.length <= 0) {
-        result.message = '查询文件列表file为空';
+        result.message = '删除文件列表id不存在，请检查';
         return result;
     }
+    // 查看是否有未找到的id 
+    if (ids.length !== fileList.length) {
+        let tempA = [...ids];
+        let tempB = fileList.map(item => item.id);
+        let diff = tempA.concat(tempB).filter(v => !tempA.includes(v) || !tempB.includes(v));
+        failList = [...diff];
+    }
+
+    // 4. 并行异步在fdfs中删除文件
     fileList.map((item) => {
-        let task = new Promise((resolve) => {
+        let task = new Promise((resolve, reject) => {
             try {
                 // 删除
-                fdfs.del(item.fileId).then((res) => {
+                fdfs.del(item.filePath).then((res) => {
                     if (!res) {
                         resolve(item)
                     } else {
@@ -112,9 +112,14 @@ const batchDeleteService = async (ids) => {
                     }
                 }).catch(() => {
                     failList.push(item.id);
+                    // 如果都是失败状态，将 promise 状态置为fulfilled
+                    if (failList.length === fileList.length) {
+                        reject();
+                    }
                 });
             } catch (err) {
                 console.warn('fdfs删除图片遇到未知错误', err);
+                reject();
             }
         })
         delList.push(task);
@@ -126,20 +131,20 @@ const batchDeleteService = async (ids) => {
         successList = [...res];
 
         // 更新数据库
-        let idsStr = '';
+        let successIds = [];
         successList.map((item) => {
-            idsStr = `${idsStr},${item.id}`
+            successIds.push(item.id);
         });
-        if (idsStr) {
+        if (successIds.length <= 0) {
             result.message = '删除发生错误';
             return result;
         }
         try {
-            let delResult = await fileDao.deleteById(idsStr);
+            let delResult = await fileDao.deleteByIds(successIds);
             if (delResult && +delResult.affectedRows > 0) {
                 result.status = true;
                 result.message = `成功删除${successList.length}张图片， 失败${failList.length}张`,
-                    result.data = {
+                result.data = {
                         successList,
                         failList,
                     };
@@ -154,7 +159,11 @@ const batchDeleteService = async (ids) => {
 
     } catch (err) {
         console.warn('删除图片遇到未知错误', err);
-        result.message = MESSAGE.UNKONW_ERROR;
+        result.message = `成功删除${successList.length}张图片， 失败${failList.length}张`,
+        result.data = {
+            successList,
+            failList,
+        }
         return result;
     }
     return result;

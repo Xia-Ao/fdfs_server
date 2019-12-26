@@ -79,7 +79,13 @@ const fileDelController = async (ctx) => {
 const fileBatchDelController = async (ctx) => {
     let {ids} = ctx.request.query;
     let result = {...responseModel};
-    result = await batchDeleteService(ids);
+    if (!ids) {
+        result.message = 'ids参数为空';
+        ctx.body = result;
+        return;
+    }
+    let idsArr = ids.split(',').map((id) => Number(id));
+    result = await batchDeleteService(idsArr);
     ctx.body = result;
 }
 

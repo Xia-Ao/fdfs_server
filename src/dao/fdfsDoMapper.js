@@ -24,6 +24,15 @@ const fastdfsDoMapper = {
         return null;
     },
 
+    async selectByIds(ids) {
+        let _sql = fdfsSQL.selectByIds(ids);
+        let result = await dbUtils.query(_sql);
+        if (!Array.isArray(result)) {
+            return [];
+        }
+        return result;
+    },
+
     async selectByFileId(fileId) {
         let _sql = fdfsSQL.selectByFileId(fileId);
         let result = await dbUtils.query(_sql);
@@ -52,6 +61,11 @@ const fastdfsDoMapper = {
         return result;
     },
 
+    async deleteByIds(ids) {
+        let _sql = fdfsSQL.deleteByIds(ids);
+        let result = await dbUtils.query(_sql);
+        return result;
+    },
 
     async updateById(id) {
 
