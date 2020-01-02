@@ -3,7 +3,7 @@
 * @Author: ao.xia
 * @Date: 2019-12-12 20:14:01
  * @Last Modified by: ao.xia
- * @Last Modified time: 2019-12-26 22:47:31
+ * @Last Modified time: 2019-12-27 09:38:22
 */
 const serviceResult = require('../model/resultData/serviceResultModel');
 const fileDao = require('../dao/fdfsDoMapper');
@@ -154,6 +154,8 @@ const batchDeleteService = async (ids) => {
             }
         } catch (err) {
             console.warn('数据库删除图片遇到未知错误', err);
+            result.message = '数据库删除图片遇到未知错误';
+            return result;
         }
         
 

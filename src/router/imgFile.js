@@ -2,11 +2,10 @@ const router = require('koa-router')();
 const {
     getFileListController,
     getFileController,
-    fileUpLoadController,
+    fileUploadController,
     fileBatchUploadController,
     fileDelController,
     fileBatchDelController,
-
 } = require('../controller/fileUploadController.js');
 
 router.prefix('/image');
@@ -18,7 +17,10 @@ router.get('/list', getFileListController);
 router.get('/get', getFileController);
 
 // 单张图片上传
-router.post('/uoload_v1', fileUpLoadController);
+router.post('/uoload_v1', fileUploadController);
+
+// 批量上传图片
+router.post('/batch_upload_v1', fileBatchUploadController);
 
 // 删除单个图片
 router.del('/del', fileDelController);
