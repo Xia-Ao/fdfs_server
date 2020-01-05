@@ -83,9 +83,6 @@ const fastdfsDoMapper = {
         return result;
     },
 
-    async updateById(id) {
-
-    },
 
     
 }

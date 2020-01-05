@@ -3,14 +3,13 @@
 * @Author: ao.xia
 * @Date: 2019-12-12 20:14:01
  * @Last Modified by: ao.xia
- * @Last Modified time: 2020-01-05 21:44:54
+ * @Last Modified time: 2020-01-05 21:52:51
 */
 const fs = require('fs');
 const fdfs = require('../common/fdfs');
 const serviceResultModel = require('../model/resultData/serviceResultModel');
 const fileDao = require('../dao/fdfsDoMapper');
 const fdfsModelToDo = require('../model/fdfs/fdfsModelToDo');
-const fdfsDoToModel = require('../model/fdfs/fdfsDoToModel');
 const {getFileExtension, dateFormat} = require('../common/utils.js');
 const getFileService = require('./getFileService');
 const mime = require('../common/mime');
@@ -87,6 +86,7 @@ const uploadService = async (file) => {
                 fileBuffer = fs.readFileSync(modelData._data);
                 break;
             case BUFFER:
+                // eslint-disable-next-line no-undef
                 fileBuffer = Buffer.from(modelData._data);
                 break;
             case STREAM:
@@ -187,6 +187,7 @@ const batchUploadService = async (files) => {
                         fileBuffer = fs.readFileSync(modelData._data);
                         break;
                     case BUFFER:
+                        // eslint-disable-next-line no-undef
                         fileBuffer = Buffer.from(modelData._data);
                         break;
                     case STREAM:
