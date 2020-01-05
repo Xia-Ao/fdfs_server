@@ -1,3 +1,9 @@
+/*
+ * @Author: ao.xia 
+ * @Date: 2020-01-05 22:06:03 
+ * @Last Modified by:   ao.xia 
+ * @Last Modified time: 2020-01-05 22:06:03 
+ */
 
 const {uploadService, batchUploadService} = require('../services/uploadFileService');
 const getFileService = require('../services/getFileService');

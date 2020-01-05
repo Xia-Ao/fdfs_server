@@ -3,7 +3,7 @@
 * @Author: ao.xia
 * @Date: 2019-12-12 20:14:01
  * @Last Modified by: ao.xia
- * @Last Modified time: 2020-01-05 21:52:51
+ * @Last Modified time: 2020-01-05 22:05:01
 */
 const fs = require('fs');
 const fdfs = require('../common/fdfs');
