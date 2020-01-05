@@ -15,6 +15,13 @@ const fastdfsDoMapper = {
         return result;
     },
 
+    async insertMultiple(doDatas) {
+        let _sqlArr = fdfsSQL.insertMultiple('image', doDatas);
+
+        let result = await dbUtils.execTransaction(_sqlArr);
+        return result;
+    },
+
     async selectById(id) {
         let _sql = fdfsSQL.selectById(id);
         let result = await dbUtils.query(_sql);
@@ -40,6 +47,15 @@ const fastdfsDoMapper = {
             return result[0];
         }
         return null;
+    },
+
+    async selectByFileIds(fileIds) {
+        let _sql = fdfsSQL.selectByFileIds(fileIds);
+        let result = await dbUtils.query(_sql);
+        if (!Array.isArray(result)) {
+            return [];
+        }
+        return result;
     },
 
     async selectListByPage({page = 1, pageSize = 10}) {

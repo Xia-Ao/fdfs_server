@@ -1,5 +1,17 @@
 
 module.exports = {
+
+    insertMultiple(table, doDatas) {
+        let sqlArr = [];
+        doDatas.forEach((data) => {
+            sqlArr.push({
+                sql: `INSERT INTO ?? SET ?`,
+                params: [table, data],
+            })
+        })
+        return sqlArr;
+    },
+
     selectByFileId(fileId) {
         return `SELECT * FROM image WHERE path = ${fileId} `
     },
@@ -11,6 +23,12 @@ module.exports = {
     selectByIds(ids) {
         let idsStr = ids.join(', ');
         return `SELECT * FROM image WHERE id IN (${idsStr})`
+    },
+    
+    selectByFileIds(fileIds) {
+        fileIds = [...fileIds.map((fileId) => `'${fileId}'`)];
+        let idsStr = fileIds.join(', ');
+        return `SELECT * FROM image WHERE path IN (${idsStr})`
     },
 
     getList(start, pageSize) {

@@ -1,5 +1,7 @@
-const { database: dbConfig = {} } = require('../../../config');
 const mysql = require('mysql');
+const async = require('async');
+
+const {database: dbConfig = {}} = require('../../../config');
 
 const pool = mysql.createPool({
     host: dbConfig.HOST,
@@ -8,6 +10,74 @@ const pool = mysql.createPool({
     database: dbConfig.DATABASE,
     multipleStatements: true,
 })
+
+/**
+ * 事务处理
+ * @param {*} sqlparamsEntities 
+ * @param {*} callback 
+ */
+const execTransaction = (sqlparamsEntities) => new Promise((resolve, reject) => {
+    pool.getConnection(function (err, connection) {
+        if (err) {
+            reject(err);
+            return;
+        }
+        connection.beginTransaction(function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            console.log("开始执行transaction，共执行" + sqlparamsEntities.length + "条数据");
+            var funcAry = [];
+            sqlparamsEntities.forEach(function (sql_param) {
+                var temp = function (cb) {
+                    var sql = sql_param.sql;
+                    var param = sql_param.params;
+                    connection.query(sql, param, function (tErr, rows, fields) {
+                        if (tErr) {
+                            connection.rollback(function () {
+                                console.log("事务失败，" + sql_param + "，ERROR：" + tErr);
+                                throw tErr;
+                            });
+                        } else {
+                            return cb(null, 'ok');
+                        }
+                    })
+                };
+                funcAry.push(temp);
+            });
+
+            async.series(funcAry, function (err, result) {
+                console.log("transaction error: " + err);
+                if (err) {
+                    connection.rollback(function (err) {
+                        console.log("transaction error: " + err);
+                        connection.release();
+                        reject(err);
+                        return;
+                    });
+                } else {
+                    connection.commit(function (err, info) {
+                        console.log("transaction info: " + JSON.stringify(info));
+                        if (err) {
+                            console.log("执行事务失败，" + err);
+                            connection.rollback(function (err) {
+                                console.log("transaction error: " + err);
+                                connection.release();
+                                reject(err);
+                                return;
+                            });
+                        } else {
+                            connection.release();
+                            resolve(info);
+                        }
+                    })
+                }
+            })
+        });
+    });
+});
+
 
 /**
  * 查询value
@@ -77,6 +147,7 @@ const count = function (table) {
 
 module.exports = {
     query,
+    execTransaction,
     createTable,
     findDataById,
     findDataByPage,

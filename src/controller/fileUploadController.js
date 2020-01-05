@@ -54,13 +54,15 @@ const fileUploadController = async (ctx) => {
  */
 const fileBatchUploadController = async (ctx) => {
 
-    let files = ctx.request.files;
+    let files = ctx.request.files;  // File 对象
+    let body = ctx.request.body;    // Buffer 对象
+    
     let result = {...responseModel};
-    if (!files) {
+    if (!files && !body.file) {
         ctx.body = result;
         return 
     }
-    result = await batchUploadService(files);
+    result = await batchUploadService((files.files) || body.files);
     ctx.body = result;
 }
 
