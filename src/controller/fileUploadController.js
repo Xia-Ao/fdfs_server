@@ -1,3 +1,9 @@
+/*
+ * @Author: ao.xia 
+ * @Date: 2020-01-05 22:06:03 
+ * @Last Modified by:   ao.xia 
+ * @Last Modified time: 2020-01-05 22:06:03 
+ */
 
 const {uploadService, batchUploadService} = require('../services/uploadFileService');
 const getFileService = require('../services/getFileService');
@@ -32,15 +38,17 @@ const getFileController = async (ctx) => {
  * @param {*} ctx 
  * @param {*} next 
  */
-const fileUpLoadController = async (ctx) => {
+const fileUploadController = async (ctx) => {
 
-    let files = ctx.request.files;
+    let files = ctx.request.files;  // File 对象
+    let body = ctx.request.body;    // Buffer 对象
+    
     let result = {...responseModel};
-    if (!files) {
+    if (!files && !body.file) {
         ctx.body = result;
         return 
     }
-    result = await uploadService(files.file);
+    result = await uploadService((files && files.file) || body.file);
     ctx.body = result;
 }
 
@@ -50,15 +58,17 @@ const fileUpLoadController = async (ctx) => {
  * @param {*} ctx 
  * @param {*} next 
  */
-const fileBatchUpLoadController = async (ctx) => {
+const fileBatchUploadController = async (ctx) => {
 
-    let files = ctx.request.files;
+    let files = ctx.request.files;  // File 对象
+    let body = ctx.request.body;    // Buffer 对象
+    
     let result = {...responseModel};
-    if (!files) {
+    if (!files && !body.file) {
         ctx.body = result;
         return 
     }
-    result = await batchUploadService(files);
+    result = await batchUploadService((files.files) || body.files);
     ctx.body = result;
 }
 
@@ -93,8 +103,8 @@ const fileBatchDelController = async (ctx) => {
 module.exports = {
     getFileController,
     getFileListController,
-    fileUpLoadController,
-    fileBatchUpLoadController,
+    fileUploadController,
+    fileBatchUploadController,
     fileDelController,
     fileBatchDelController,
 };

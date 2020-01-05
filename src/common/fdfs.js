@@ -1,13 +1,20 @@
+/*
+ * @Author: ao.xia 
+ * @Date: 2020-01-05 22:06:15 
+ * @Last Modified by: ao.xia
+ * @Last Modified time: 2020-01-05 22:08:35
+ */
 
 const FdfsClient = require('fdfs');
 const debug = require('debug')('fdfs');
+const config = require('../../config');
 
 
 const fdfs = new FdfsClient({
     // tracker servers
     trackers: [
         {
-            host: '47.98.158.198',
+            host: config.address,
             port: 22122
         }
     ],

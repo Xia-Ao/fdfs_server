@@ -1,15 +1,11 @@
-const fs = require('fs');
 const Koa = require('koa');
 const koaOnerror = require('koa-onerror');
 const json = require('koa-json');
 const koaBody = require('koa-body');
-const bodyparser = require('koa-bodyparser');
 const logger = require('koa-logger');
 
 
 const uploadRouter = require('./src/router/imgFile');
-const index = require('./src/router/index');
-
 
 const app = new Koa();
 
@@ -43,7 +39,6 @@ app.use(koaBody({
 
 // routers
 app.use(uploadRouter.routes(), uploadRouter.allowedMethods());
-app.use(index.routes(), index.allowedMethods());
 
 
 

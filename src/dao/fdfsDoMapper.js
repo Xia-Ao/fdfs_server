@@ -1,3 +1,9 @@
+/*
+ * @Author: ao.xia 
+ * @Date: 2020-01-05 22:05:42 
+ * @Last Modified by:   ao.xia 
+ * @Last Modified time: 2020-01-05 22:05:42 
+ */
 
 const dbUtils = require('./DB/db-util');
 const fdfsSQL = require('./SQL/fdfsSQL.js');
@@ -12,6 +18,13 @@ const fastdfsDoMapper = {
      */
     async insert(doData) {
         let result = await dbUtils.insertData('image', doData)
+        return result;
+    },
+
+    async insertMultiple(doDatas) {
+        let _sqlArr = fdfsSQL.insertMultiple('image', doDatas);
+
+        let result = await dbUtils.execTransaction(_sqlArr);
         return result;
     },
 
@@ -42,6 +55,15 @@ const fastdfsDoMapper = {
         return null;
     },
 
+    async selectByFileIds(fileIds) {
+        let _sql = fdfsSQL.selectByFileIds(fileIds);
+        let result = await dbUtils.query(_sql);
+        if (!Array.isArray(result)) {
+            return [];
+        }
+        return result;
+    },
+
     async selectListByPage({page = 1, pageSize = 10}) {
         var start = (page - 1) * pageSize;
         let result = await dbUtils.query(fdfsSQL.getList(start, pageSize));
@@ -67,9 +89,6 @@ const fastdfsDoMapper = {
         return result;
     },
 
-    async updateById(id) {
-
-    },
 
     
 }
