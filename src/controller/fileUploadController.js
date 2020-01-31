@@ -1,8 +1,8 @@
 /*
  * @Author: ao.xia 
  * @Date: 2020-01-05 22:06:03 
- * @Last Modified by:   ao.xia 
- * @Last Modified time: 2020-01-05 22:06:03 
+ * @Last Modified by: ao.xia
+ * @Last Modified time: 2020-01-29 23:10:59
  */
 
 const {uploadService, batchUploadService} = require('../services/uploadFileService');
@@ -68,7 +68,7 @@ const fileBatchUploadController = async (ctx) => {
         ctx.body = result;
         return 
     }
-    result = await batchUploadService((files.files) || body.files);
+    result = await batchUploadService(files.files || body.files);
     ctx.body = result;
 }
 

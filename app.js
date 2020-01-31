@@ -3,6 +3,7 @@ const koaOnerror = require('koa-onerror');
 const json = require('koa-json');
 const koaBody = require('koa-body');
 const logger = require('koa-logger');
+const cors = require('koa2-cors');
 
 
 const uploadRouter = require('./src/router/imgFile');
@@ -16,6 +17,16 @@ koaOnerror(app);
 
 app.use(json());
 app.use(logger());
+
+// 解决跨域
+app.use(cors({
+  origin: '*',
+  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+  maxAge: 5,
+  credentials: true,
+  allowMethods: ['GET', 'POST', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+}));
 
 //  使用ctx.body解析中间件
 // app.use(bodyparser({
