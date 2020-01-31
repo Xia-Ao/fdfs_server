@@ -2,7 +2,7 @@
  * @Author: ao.xia 
  * @Date: 2019-12-14 01:42:36 
  * @Last Modified by: ao.xia
- * @Last Modified time: 2019-12-18 21:28:21
+ * @Last Modified time: 2020-01-26 17:06:34
  */
 const isEmpty = data => data === '' || data === null || typeof data === 'undefined';
 
