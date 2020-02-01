@@ -2,7 +2,7 @@
  * @Author: ao.xia 
  * @Date: 2019-12-14 01:24:22 
  * @Last Modified by: ao.xia
- * @Last Modified time: 2020-01-26 17:06:33
+ * @Last Modified time: 2020-02-01 13:42:36
  */
 
 const {dateFormat} = require('../../common/utils.js');
@@ -17,7 +17,7 @@ const fdfsDoToModel = (data) => {
 
     let _getPath = path => path;
 
-    let _grtUrl = path => `http://img.xiaao.xin/${path}`;
+    let _grtUrl = path => `https://img.xiaao.xin/${path}`;
 
     let _getExtension = extension => extension;
 
