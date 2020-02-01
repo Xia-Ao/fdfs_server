@@ -1,1 +1,1 @@
-pm2 start ./bin/www.js --watch -n imgBed_server
+pm2 start ./bin/www.js --watch -n imgBed-server
