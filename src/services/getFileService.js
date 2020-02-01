@@ -3,7 +3,7 @@
 * @Author: ao.xia
 * @Date: 2019-12-12 20:14:01
  * @Last Modified by: ao.xia
- * @Last Modified time: 2020-01-26 16:47:47
+ * @Last Modified time: 2020-02-01 14:14:47
 */
 
 const serviceResultModel = require('../model/resultData/serviceResultModel');
@@ -105,21 +105,13 @@ const getFileListByFileIds = async (FileIds) => {
 const getFileListService = async (params) => {
     let result = {...serviceResultModel};
     // 入参校验
-    const {page, pageSize} = params;
-    if (!page) {
-        result.message = '参数page不能为空或者0';
-        return result;
-    }
-    if (!pageSize) {
-        result.message = '参数pageSize不能为空或者0';
-        return result;
-    }
+    const {page = 1, pageSize = 10} = params;
     let daoResult = await fileDao.selectListByPage({
         page: Number(page),
         pageSize: Number(pageSize),
     });
 
-    if (Array.isArray(daoResult.list) && daoResult.list.length > 0) {
+    if (Array.isArray(daoResult.list)) {
         daoResult.list = daoResult.list.map(item => fdfsDoToModel(item));
     } else {
         result.status = false;
