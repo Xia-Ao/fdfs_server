@@ -1,8 +1,8 @@
 /*
  * @Author: ao.xia 
  * @Date: 2020-01-05 22:05:47 
- * @Last Modified by:   ao.xia 
- * @Last Modified time: 2020-01-05 22:05:47 
+ * @Last Modified by: ao.xia
+ * @Last Modified time: 2020-02-01 14:49:35
  */
 
 module.exports = {
@@ -40,7 +40,7 @@ module.exports = {
     getList(start, pageSize) {
         return `
             SELECT COUNT(*) AS total FROM image;
-            SELECT * FROM image ORDER BY create_time DESC limit ${start}, ${pageSize}
+            SELECT * FROM image ORDER BY id DESC limit ${start}, ${pageSize}
         `
     },
 
