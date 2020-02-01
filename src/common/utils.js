@@ -2,7 +2,7 @@
  * @Author: ao.xia 
  * @Date: 2019-12-14 01:42:36 
  * @Last Modified by: ao.xia
- * @Last Modified time: 2020-01-26 17:06:34
+ * @Last Modified time: 2020-02-01 15:00:23
  */
 const isEmpty = data => data === '' || data === null || typeof data === 'undefined';
 
@@ -30,7 +30,7 @@ const dateStringFormat = (formatStr, {
     const doubleTime = time => (time <= 9 ? `0${time}` : time.toString());
     formatStr = formatStr.replace(/yyyy|YYYY/, yyyy)
         .replace(/yy|YY/, yy)
-        .replace(/MM/, M)
+        .replace(/MM/, doubleTime(M))
         .replace(/M/g, M)
         .replace(/www|WWW/, `星期${w}`)
         .replace(/ww|WW/, `周${w}`)
